@@ -16,7 +16,8 @@ export default function MealDetailScreen({ navigation, route }) {
   const meal = MEALS.find((Meal) => Meal.id === foodid);
 
   function headerButtonPressHandler() {
-    console.log("Pressed!");
+    meal.liked = !meal.liked;
+    console.log(liked);
   }
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -115,6 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "ffffff",
   },
   imgContainer: {
     width: "90%",
@@ -158,16 +160,15 @@ const styles = StyleSheet.create({
     alignContent: "center",
     margin: "2%",
   },
-  logo: {
-    width: "16%",
-    height: "60%",
-    margin: "2%",
-    marginTop: "10%",
-    marginBottom: "1%",
-  },
   title: {
     flex: 1,
     flexDirection: "row",
     backgroundColor: "#e5e5e5",
+  },
+  logo: {
+    width: "16%",
+    height: "53%",
+    margin: "2%",
+    marginTop: "10%",
   },
 });
