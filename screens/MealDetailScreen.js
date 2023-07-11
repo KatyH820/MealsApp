@@ -7,17 +7,41 @@ import {
   Button,
 } from "react-native";
 import { MEALS } from "../data/dummy-data";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect, useState } from "react";
 
 import { Entypo } from "@expo/vector-icons";
 import IconButton from "../components/IconButton";
+import { FavoritesContext } from "../store/context/favorites-context";
+import { useDispatch, useSelector } from "react-redux";
+import { favoriteAction } from "../store/redux/favorites-slice";
 export default function MealDetailScreen({ navigation, route }) {
+  // const ctx = useContext(FavoritesContext);
   const foodid = route.params.id;
+
   const meal = MEALS.find((Meal) => Meal.id === foodid);
 
+  // const mealIsFavorite = ctx.id.includes(meal.id);
+  // function headerButtonPressHandler() {
+  //   if (mealIsFavorite) {
+  //     ctx.removeFavorite(meal.id);
+  //   } else {
+  //     ctx.addFavorite(meal.id);
+  //   }
+  // }
+
+  const liked = useSelector((state) => state.id);
+  const [mealIsFavorite, setMealIsFavorite] = useState(liked.includes(meal.id));
+
+  const dispatch = useDispatch();
+
   function headerButtonPressHandler() {
-    meal.liked = !meal.liked;
-    console.log(liked);
+    if (mealIsFavorite) {
+      dispatch(favoriteAction.removeFavorite(meal.id));
+      setMealIsFavorite(false);
+    } else {
+      dispatch(favoriteAction.addFavorite(meal.id));
+      setMealIsFavorite(true);
+    }
   }
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -36,7 +60,7 @@ export default function MealDetailScreen({ navigation, route }) {
         return (
           <IconButton
             icon="heart"
-            color="#90a955"
+            color={mealIsFavorite ? "#3a5a40" : "#90a955"}
             onPress={headerButtonPressHandler}
           />
         );

@@ -14,6 +14,9 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import FavoriteScreen from "./screens/FavoriteScreen";
 import Home from "./screens/Home";
 import { Ionicons } from "@expo/vector-icons";
+import FavoritesContextProvider from "./store/context/favorites-context";
+import { Provider } from "react-redux";
+import { store } from "./store/redux";
 
 const Tab = createBottomTabNavigator();
 export default function App() {
@@ -32,57 +35,61 @@ export default function App() {
   }
 
   return (
-    <NavigationContainer>
-      <Tab.Navigator
-        screenOptions={{
-          headerTitleStyle: {
-            fontFamily: "Diphylleia-Regular",
-            fontSize: 30,
-          },
-          headerTitleAlign: "center",
-          contentStyle: { backgroundColor: "#ffffff" },
-          // headerShadowVisible: true,
-          animation: "fade_from_bottom",
-          headerBackground: () => {
-            return (
-              <View style={styles.title}>
-                <Image
-                  source={require("./assets/imgs/logo.png")}
-                  style={styles.logo}
-                />
-                <Image
-                  source={require("./assets/imgs/logo.png")}
-                  style={styles.logo}
-                />
-              </View>
-            );
-          },
+    // <FavoritesContextProvider>
+    <Provider store={store}>
+      <NavigationContainer>
+        <Tab.Navigator
+          screenOptions={{
+            headerTitleStyle: {
+              fontFamily: "Diphylleia-Regular",
+              fontSize: 30,
+            },
+            headerTitleAlign: "center",
+            contentStyle: { backgroundColor: "#ffffff" },
+            // headerShadowVisible: true,
+            animation: "fade_from_bottom",
+            headerBackground: () => {
+              return (
+                <View style={styles.title}>
+                  <Image
+                    source={require("./assets/imgs/logo.png")}
+                    style={styles.logo}
+                  />
+                  <Image
+                    source={require("./assets/imgs/logo.png")}
+                    style={styles.logo}
+                  />
+                </View>
+              );
+            },
 
-          tabBarActiveTintColor: "#3a5a40",
-        }}
-      >
-        <Tab.Screen
-          name="Home"
-          component={Home}
-          options={{
-            headerShown: false,
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="home" color={color} size={size} />
-            ),
+            tabBarActiveTintColor: "#3a5a40",
           }}
-        />
-        <Tab.Screen
-          name="Liked"
-          component={FavoriteScreen}
-          options={{
-            title: "Liked",
-            tabBarIcon: ({ color, size }) => (
-              <Ionicons name="heart" color={color} size={size} />
-            ),
-          }}
-        />
-      </Tab.Navigator>
-    </NavigationContainer>
+        >
+          <Tab.Screen
+            name="Home"
+            component={Home}
+            options={{
+              headerShown: false,
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="home" color={color} size={size} />
+              ),
+            }}
+          />
+          <Tab.Screen
+            name="Liked"
+            component={FavoriteScreen}
+            options={{
+              title: "Liked",
+              tabBarIcon: ({ color, size }) => (
+                <Ionicons name="heart" color={color} size={size} />
+              ),
+            }}
+          />
+        </Tab.Navigator>
+      </NavigationContainer>
+    </Provider>
+    // </FavoritesContextProvider>
   );
 }
 
